@@ -19,8 +19,10 @@ tqdm.pandas()
 morph = pymorphy2.MorphAnalyzer()
 tokenizer = nltk.data.load('tokenizers/punkt/russian.pickle')
 
+
 def remove_tags(text: str) -> str:
     return re.sub('<[^>]*>', ' ', text)
+
 
 def review_to_wordlist(review, remove_stopwords=False):
     review = remove_tags(review)
@@ -29,7 +31,7 @@ def review_to_wordlist(review, remove_stopwords=False):
     review = re.sub(r"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+", " ", review)
     # достаем сам текст
     
-    review_text = re.sub("[^а-яА-Я]"," ", review)
+    review_text = re.sub("[^а-яА-Яa-zA-Z]"," ", review)
     # приводим к нижнему регистру и разбиваем на слова по символу пробела
     words = review_text.lower().split()
     
@@ -38,6 +40,7 @@ def review_to_wordlist(review, remove_stopwords=False):
         stops = stopwords.words("russian")
         words = [w for w in words if not w in stops]
     return(words)
+
 
 def review_to_sentences(review, tokenizer, remove_stopwords=False):
     raw_sentences = tokenizer.tokenize(review.strip())
